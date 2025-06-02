@@ -8,7 +8,6 @@
 </head>
 <body>
   <!-- === Your main app HTML goes here (edit as you wish) === -->
-  <div id="app">
   <!-- Your Webflow section will start here -->
   <div class="main player-container" id="app">
     <div id="background-overlay" class="background-overlay"></div>
@@ -481,13 +480,12 @@
         <div class="error-message" id="auth-error-message" style="color:#ff4444; margin-top:0.5em;"></div>
       </form>
     </div>
-  </div>
 
   <!-- === Scripts for Auth and Payments === -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // --- Supabase Setup ---
-    const supabase = window.supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
+    const supabase = window.supabase.createClient('https://ojeyqqzpmhapnwwupely.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qZXlxcXpwbWhhcG53d3VwZWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NDkwMDYsImV4cCI6MjA2MzEyNTAwNn0.8KrxB1P76kTtdaPxH8fINqCa6oB6xzA_BesvXpxsCF4');
 
     // --- Auth Modal Logic ---
     const authModal = document.getElementById('auth-modal');
