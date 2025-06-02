@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ambient Sound Player</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Sound Player</title>
+  <meta name="description" content="A beautiful ambient sound player">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css">
 </head>
 <body>
-  <!-- === Your main app HTML goes here (edit as you wish) === -->
   <!-- Your Webflow section will start here -->
   <div class="main player-container" id="app">
     <div id="background-overlay" class="background-overlay"></div>
@@ -460,116 +461,10 @@
     <!-- Remove old show-list-btn if present -->
     <script>document.getElementById('show-list-btn')?.remove();</script>
   </div>
-  </div>
 
-  <!-- === Auth Modal (hidden by default) === -->
-  <div id="auth-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:2em; border-radius:12px; min-width:300px; box-shadow:0 2px 16px rgba(0,0,0,0.2); text-align:left;">
-      <h2>Sign In or Create Account</h2>
-      <form id="auth-form">
-        <div class="form-group">
-          <label for="auth-email">Email</label>
-          <input type="email" id="auth-email" required>
-        </div>
-        <div class="form-group">
-          <label for="auth-password">Password</label>
-          <input type="password" id="auth-password" required>
-        </div>
-        <button type="submit" class="auth-btn">Sign In</button>
-        <button type="button" class="auth-btn" id="signup-btn" style="background:#2196F3;margin-top:0.5em;">Sign Up</button>
-        <div class="error-message" id="auth-error-message" style="color:#ff4444; margin-top:0.5em;"></div>
-      </form>
-    </div>
-
-  <!-- === Scripts for Auth and Payments === -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // --- Supabase Setup ---
-    const supabase = window.supabase.createClient('https://ojeyqqzpmhapnwwupely.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qZXlxcXpwbWhhcG53d3VwZWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NDkwMDYsImV4cCI6MjA2MzEyNTAwNn0.8KrxB1P76kTtdaPxH8fINqCa6oB6xzA_BesvXpxsCF4');
-
-    // --- Auth Modal Logic ---
-    const authModal = document.getElementById('auth-modal');
-    const authForm = document.getElementById('auth-form');
-    const signupBtn = document.getElementById('signup-btn');
-    const errorMessage = document.getElementById('auth-error-message');
-
-    async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        authModal.style.display = 'none';
-        // Optionally, show user info in your app here
-      } else {
-        authModal.style.display = 'flex';
-      }
-    }
-
-    if (authForm) {
-      authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorMessage.textContent = '';
-        const email = document.getElementById('auth-email').value;
-        const password = document.getElementById('auth-password').value;
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) {
-          errorMessage.textContent = error.message;
-        } else {
-          checkAuth();
-        }
-      });
-    }
-
-    if (signupBtn) {
-      signupBtn.addEventListener('click', async () => {
-        errorMessage.textContent = '';
-        const email = document.getElementById('auth-email').value;
-        const password = document.getElementById('auth-password').value;
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) {
-          errorMessage.textContent = error.message;
-        } else {
-          errorMessage.textContent = "Check your email for confirmation!";
-        }
-      });
-    }
-
-    // Check auth on page load
-    checkAuth();
-
-    // Listen for auth state changes
-    supabase.auth.onAuthStateChange((_event, _session) => {
-      checkAuth();
-    });
-
-    // --- Payment/Checkout Logic ---
-    async function startCheckout(email, userId) {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          userId,
-          // ...other params as needed
-        })
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url; // Redirect to payment
-      } else {
-        alert(data.error || 'Checkout failed');
-      }
-    }
-
-    // Example: Call startCheckout when user clicks a "Go Premium" button
-    // document.getElementById('go-premium-btn').onclick = () => {
-    //   const email = ...; // get from user/session
-    //   const userId = ...; // get from user/session
-    //   startCheckout(email, userId);
-    // };
-  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="main.js"></script>
-  <!-- === End of Auth and Payments code === -->
 </body>
 </html>
